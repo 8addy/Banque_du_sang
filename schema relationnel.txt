@@ -1,0 +1,100 @@
+
+* Manager(+ManagerID, ManagerNom, Email, Password)
+
+* Employee(+EmployeeID, EmployeeNom, EmployeeAdresse, EmployeeSalaire, EmployeeTele)
+
+* Donneur(+DonneurID, DonneurNom, DonneurSexe, DonneurDateNaiss, DonneurTypeSang, DonneurAdresse, DonneurVille, DonneurTele, Eligibility)
+
+* StockSang(+PocheNum, #DonneurID, QuantityDisponible, GlobulesRouges, GlobulesBlancs, Plaquettes, Plasma)
+
+* DetailsDonation(+DonationNum, #PocheNum, Hopital, GivingDate, GivenAmount);
+
+* Donataire(+DonataireID, DonataireNom, DonataireDateNaiss, DonataireSexe, DonataireAdresse, DonataireVille, DonataireTele, #DonationNum)
+
+
+---------------------------------------------------------
+
+Create User sang identified by sang;
+grant connect, resource to sang;
+
+
+create table Manager(
+ManagerID number(4),
+ManagerNom varchar2(30),
+Email varchar2(30),
+Password varchar2(30),
+constraint pk_managerid primary key(ManagerId));
+
+
+create table Employee(
+EmployeeID number(4),
+EmployeeNom varchar2(40),
+EmployeeAdresse varchar2(40),
+EmployeeSalaire number(4),
+EmployeeTele number(14),
+constraint pk_employeeid primary key(EmployeeID));
+
+
+create table Donneur(
+DonneurID number(6),
+DonneurNom varchar2(40),
+DonneurSexe varchar2(20),
+DonneurDateNaiss date,
+DonneurTypeSang varchar2(5),
+DonneurAdresse varchar2(40),
+DonneurVille varchar2(20),
+DonneurTele number(14),
+Eligibility varchar2(20),
+constraint pk_donneurid primary key(DonneurID));
+
+create sequence seq_DonneurID start with 1;
+
+
+
+create table Donataire(
+DonataireID number(6),
+DonataireNom varchar2(40),
+DonataireSexe varchar2(20),
+DonataireDateNaiss date,
+DonataireTypeSang varchar2(5),
+DonataireAdresse varchar2(40),
+DonataireVille varchar2(20),
+DonataireTele number(14),
+constraint pk_donataireid primary key(DonataireID));
+
+create sequence seq_DonataireID start with 1;
+
+
+
+
+create table StockSang(
+PocheNum number(6),
+DonneurID number(6),
+QuantityDisponible number(4),
+GlobulesRouges varchar2(100),
+GlobulesBlanc varchar2(100),
+Plaquettes varchar2(100),
+Plasma varchar2(100),
+constraint pk_pochenum primary key(PocheNum),
+constraint fk_donneurid_stock foreign key(DonneurID) references Donneur(DonneurId));
+
+create sequence seq_pocheNum start with 1;
+
+
+
+create table DetailsDonation(
+DonationNum number(6),
+PocheNum number(6),
+DonataireID number(6),
+Hospital varchar2(100),
+DatePrendre date,
+QunatitePrendre number(6),
+constraint pk_DonationNum primary key(DonationNum),
+constraint fk_DonataireID_DetailsD foreign key(DonataireID) references Donataire(DonataireID));
+
+create sequence seq_DonationNum start with 1;
+
+
+
+
+
